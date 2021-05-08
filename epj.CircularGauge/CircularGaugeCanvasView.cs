@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace epj.CircularGauge
 {
-    public class CircularGaugeCanvasView : SKCanvasView
+    internal sealed class CircularGaugeCanvasView : SKCanvasView
     {
         internal float StartAngle { get; set; } = 45.0f;
         internal float SweepAngle { get; set; } = 270.0f;
@@ -26,6 +26,8 @@ namespace epj.CircularGauge
 
             using (var path = new SKPath())
             {
+                //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
+                //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
                 var startAngle90 = StartAngle + 90.0f;
 
                 path.AddArc(rect, startAngle90, SweepAngle);
