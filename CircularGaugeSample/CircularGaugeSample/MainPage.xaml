@@ -4,7 +4,7 @@
              xmlns:circularGauge="clr-namespace:epj.CircularGauge;assembly=epj.CircularGauge"
              x:Class="CircularGaugeSample.MainPage">
 
-    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
       <circularGauge:CircularGauge/>
     </StackLayout>
 
