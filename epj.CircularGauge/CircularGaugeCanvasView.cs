@@ -24,12 +24,12 @@ namespace epj.CircularGauge
 
             var rect = new SKRect(100, 100, info.Width - 100, info.Height - 100);
 
+            //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
+            //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
+            var startAngle90 = StartAngle + 90.0f;
+
             using (var path = new SKPath())
             {
-                //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
-                //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
-                var startAngle90 = StartAngle + 90.0f;
-
                 path.AddArc(rect, startAngle90, SweepAngle);
 
                 using (var paint = new SKPaint())
