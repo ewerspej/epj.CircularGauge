@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
@@ -14,6 +15,7 @@ namespace epj.CircularGauge
         private SKSurface _surface;
         private SKCanvas _canvas;
         private SKRect _drawRect;
+        private SKPoint _center;
 
         #endregion
 
@@ -36,14 +38,28 @@ namespace epj.CircularGauge
             _canvas = _surface.Canvas;
             _canvas.Clear();
 
-            //setup the rectangle which we will draw in
+            //setup the rectangle which we will draw in and the center point of the gauge
             _drawRect = new SKRect(100, 100, _info.Width - 100, _info.Height - 100);
+            _center = new SKPoint(_info.Rect.MidX, _info.Rect.MidY);
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
             //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
             var startAngle90 = StartAngle + 90.0f;
 
             DrawGauge(startAngle90);
+            //DrawScale();
+            DrawNeedle();
+        }
+
+        private void DrawNeedle()
+        {
+            //TODO: implement
+        }
+
+        private void DrawScale()
+        {
+            //TODO: implement
+            throw new NotImplementedException();
         }
 
         private void DrawGauge(float startAngle)
@@ -58,11 +74,10 @@ namespace epj.CircularGauge
                     if (GaugeGradientColors?.Count > 0)
                     {
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
-                        var center = new SKPoint(_info.Rect.MidX, _info.Rect.MidY);
 
-                        paint.Shader = SKShader.CreateSweepGradient(center: center, colors: colors,
+                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors,
                                 tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
-                            .WithLocalMatrix(SKMatrix.CreateRotationDegrees(startAngle, center.X, center.Y));
+                            .WithLocalMatrix(SKMatrix.CreateRotationDegrees(startAngle, _center.X, _center.Y));
                     }
                     else
                     {
