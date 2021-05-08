@@ -86,6 +86,51 @@ namespace epj.CircularGauge
             }
         }
 
+        public float RangeStart
+        {
+            get => GaugeCanvas.RangeStart;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.RangeStart - value) < FloatDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.RangeStart = value;
+                GaugeCanvas.InvalidateSurface();
+            }
+        }
+
+        public float RangeEnd
+        {
+            get => GaugeCanvas.RangeEnd;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.RangeEnd - value) < FloatDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.RangeEnd = value;
+                GaugeCanvas.InvalidateSurface();
+            }
+        }
+
+        public float Value
+        {
+            get => GaugeCanvas.Value;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.Value - value) < FloatDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.Value = value;
+                GaugeCanvas.InvalidateSurface();
+            }
+        }
+
         #endregion
 
         #region Bindable Properties
@@ -108,11 +153,29 @@ namespace epj.CircularGauge
                                                                                     defaultBindingMode: BindingMode.OneWay,
                                                                                     propertyChanged: OnGaugeWidthPropertyChanged);
 
-        public static BindableProperty GaugeColorProperty = BindableProperty.Create(propertyName: nameof(GaugeWidth),
+        public static BindableProperty GaugeColorProperty = BindableProperty.Create(propertyName: nameof(GaugeColor),
                                                                                     returnType: typeof(Color),
                                                                                     declaringType: typeof(CircularGauge),
                                                                                     defaultBindingMode: BindingMode.OneWay,
                                                                                     propertyChanged: OnGaugeColorPropertyChanged);
+
+        public static BindableProperty RangeStartProperty = BindableProperty.Create(propertyName: nameof(RangeStart),
+                                                                                    returnType: typeof(float),
+                                                                                    declaringType: typeof(CircularGauge),
+                                                                                    defaultBindingMode: BindingMode.OneWay,
+                                                                                    propertyChanged: OnRangeStartPropertyChanged);
+
+        public static BindableProperty RangeEndProperty = BindableProperty.Create(propertyName: nameof(RangeEnd),
+                                                                                  returnType: typeof(float),
+                                                                                  declaringType: typeof(CircularGauge),
+                                                                                  defaultBindingMode: BindingMode.OneWay,
+                                                                                  propertyChanged: OnRangeEndPropertyChanged);
+
+        public static BindableProperty ValueProperty = BindableProperty.Create(propertyName: nameof(Value),
+                                                                               returnType: typeof(float),
+                                                                               declaringType: typeof(CircularGauge),
+                                                                               defaultBindingMode: BindingMode.OneWay,
+                                                                               propertyChanged: OnValuePropertyChanged);
 
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
@@ -132,6 +195,21 @@ namespace epj.CircularGauge
         private static void OnGaugeColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).GaugeColor = (Color)newValue;
+        }
+
+        private static void OnRangeEndPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).RangeEnd = (float)newValue;
+        }
+
+        private static void OnRangeStartPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).RangeStart = (float)newValue;
+        }
+
+        private static void OnValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).Value = (float)newValue;
         }
 
         #endregion

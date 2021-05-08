@@ -2,7 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:circularGauge="clr-namespace:epj.CircularGauge;assembly=epj.CircularGauge"
+             xmlns:converters="clr-namespace:CircularGaugeSample.Converters;assembly=CircularGaugeSample"
              x:Class="CircularGaugeSample.MainPage">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:StringToFloatConverter x:Key="StringToFloat" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
 
   <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
     <Grid ColumnDefinitions="100,150,50" RowDefinitions="auto">
@@ -17,10 +24,22 @@
       <Label Grid.Row="2" Grid.Column="0" Text="Gauge Width"/>
       <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="200.0" Value="100.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}"/>
+
+      <Label Grid.Row="3" Grid.Column="0" Text="Max Value"/>
+      <Entry Grid.Row="3" Grid.Column="1" x:Name="MaxValueEntry" Keyboard="Numeric" Text="100" FontSize="Small" />
+
+      <Label Grid.Row="4" Grid.Column="0" Text="Value"/>
+      <Slider Grid.Row="4" Grid.Column="1" x:Name="ValueSlider"
+              Maximum="{Binding Text, Source={x:Reference MaxValueEntry}, Converter={StaticResource StringToFloat}}"
+              Value="0.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="4" Grid.Column="2" Text="{Binding Value, Source={x:Reference ValueSlider}}"/>
     </Grid>
 
     <circularGauge:CircularGauge WidthRequest="250" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center"
                                  GaugeColor="Chocolate"
+                                 RangeStart="0.0"
+                                 RangeEnd="{Binding Text, Source={x:Reference MaxValueEntry}, Converter={StaticResource StringToFloat}}"
+                                 Value="{Binding Value, Source={x:Reference ValueSlider}}"
                                  StartAngle="{Binding Value, Source={x:Reference StartAngleSlider}}"
                                  SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"
                                  GaugeWidth="{Binding Value, Source={x:Reference GaugeWidthSlider}}">
