@@ -79,13 +79,18 @@ namespace epj.CircularGauge
 
             using (var needlePath = new SKPath())
             {
+                //first set up needle pointing towards 0 degrees (or 6 o'clock)
                 needlePath.MoveTo(_center.X - 15.0f, _center.Y - 40.0f);
                 needlePath.LineTo(_center.X + 15.0f, _center.Y - 40.0f);
                 needlePath.LineTo(_center.X, _center.Y + _drawRect.Height * 0.55f);
                 needlePath.LineTo(_center.X - 15.0f, _center.Y - 40.0f);
                 needlePath.Close();
 
-                needlePath.Transform(SKMatrix.CreateRotationDegrees(StartAngle, _center.X, _center.Y));
+                //then calculate needle position in degrees
+                var needlePosition = StartAngle + (Value / (RangeEnd - RangeStart) * SweepAngle);
+
+                //finally rotate needle to actual value
+                needlePath.Transform(SKMatrix.CreateRotationDegrees(needlePosition, _center.X, _center.Y));
 
                 using (var needlePaint = new SKPaint())
                 {
