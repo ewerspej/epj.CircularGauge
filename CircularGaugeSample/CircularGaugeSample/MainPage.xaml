@@ -25,9 +25,11 @@
                                  SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"
                                  GaugeWidth="{Binding Value, Source={x:Reference GaugeWidthSlider}}">
       <circularGauge:CircularGauge.GaugeGradientColors>
-        <Color>Green</Color>
+        <Color>DarkGreen</Color>
+        <Color>YellowGreen</Color>
         <Color>Yellow</Color>
-        <Color>Red</Color>
+        <Color>OrangeRed</Color>
+        <Color>DarkRed</Color>
       </circularGauge:CircularGauge.GaugeGradientColors>
     </circularGauge:CircularGauge>
   </StackLayout>
