@@ -61,8 +61,6 @@ namespace epj.CircularGauge
 
         private void DrawNeedle()
         {
-            //TODO: implement
-
             //first draw a circle as the base for the needle
             using (var basePath = new SKPath())
             {
