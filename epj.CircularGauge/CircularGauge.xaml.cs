@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace epj.CircularGauge
@@ -6,58 +7,96 @@ namespace epj.CircularGauge
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CircularGauge : ContentView
     {
+        private const float FloatDelta = 0.001f;
+
         #region Properties
         public float StartAngle
         {
             get => GaugeCanvas.StartAngle;
-            set => GaugeCanvas.StartAngle = value;
+            set
+            {
+                if (!(Math.Abs(value - GaugeCanvas.StartAngle) > FloatDelta))
+                {
+                    return;
+                }
+
+                GaugeCanvas.StartAngle = value;
+                GaugeCanvas.InvalidateSurface();
+            }
         }
 
         public float SweepAngle
         {
             get => GaugeCanvas.SweepAngle;
-            set => GaugeCanvas.SweepAngle = value;
+            set
+            {
+                if (!(Math.Abs(value - GaugeCanvas.SweepAngle) > FloatDelta))
+                {
+                    return;
+                }
+
+                GaugeCanvas.SweepAngle = value;
+                GaugeCanvas.InvalidateSurface();
+            }
         }
 
         public float GaugeWidth
         {
             get => GaugeCanvas.GaugeWidth;
-            set => GaugeCanvas.GaugeWidth = value;
+            set
+            {
+                if (!(Math.Abs(value - GaugeCanvas.GaugeWidth) > FloatDelta))
+                {
+                    return;
+                }
+
+                GaugeCanvas.GaugeWidth = value;
+                GaugeCanvas.InvalidateSurface();
+            }
         }
 
         public Color GaugeColor
         {
             get => GaugeCanvas.GaugeColor;
-            set => GaugeCanvas.GaugeColor = value;
+            set
+            {
+                if (value == GaugeCanvas.GaugeColor)
+                {
+                    return;
+                }
+
+                GaugeCanvas.GaugeColor = value;
+                GaugeCanvas.InvalidateSurface();
+            }
         }
 
         #endregion
 
         #region Bindable Properties
 
-        public BindableProperty StartAngleProperty = BindableProperty.Create(propertyName: nameof(StartAngle),
-                                                                             returnType: typeof(float),
-                                                                             declaringType: typeof(CircularGauge),
-                                                                             defaultBindingMode: BindingMode.OneWay,
-                                                                             propertyChanged: OnStartAnglePropertyChanged);
+        public static BindableProperty StartAngleProperty = BindableProperty.Create(propertyName: nameof(StartAngle),
+                                                                                    returnType: typeof(float),
+                                                                                    declaringType: typeof(CircularGauge),
+                                                                                    defaultBindingMode: BindingMode.OneWay,
+                                                                                    propertyChanged: OnStartAnglePropertyChanged);
 
-        public BindableProperty SweepAngleProperty = BindableProperty.Create(propertyName: nameof(SweepAngle),
-                                                                             returnType: typeof(float),
-                                                                             declaringType: typeof(CircularGauge),
-                                                                             defaultBindingMode: BindingMode.OneWay,
-                                                                             propertyChanged: OnSweepAnglePropertyChanged);
+        public static BindableProperty SweepAngleProperty = BindableProperty.Create(propertyName: nameof(SweepAngle),
+                                                                                    returnType: typeof(float),
+                                                                                    declaringType: typeof(CircularGauge),
+                                                                                    defaultBindingMode: BindingMode.OneWay,
+                                                                                    propertyChanged: OnSweepAnglePropertyChanged);
 
-        public BindableProperty GaugeWidthProperty = BindableProperty.Create(propertyName: nameof(GaugeWidth),
-                                                                             returnType: typeof(float),
-                                                                             declaringType: typeof(CircularGauge),
-                                                                             defaultBindingMode: BindingMode.OneWay,
-                                                                             propertyChanged: OnGaugeWidthPropertyChanged);
+        public static BindableProperty GaugeWidthProperty = BindableProperty.Create(propertyName: nameof(GaugeWidth),
+                                                                                    returnType: typeof(float),
+                                                                                    declaringType: typeof(CircularGauge),
+                                                                                    defaultBindingMode: BindingMode.OneWay,
+                                                                                    propertyChanged: OnGaugeWidthPropertyChanged);
 
-        public BindableProperty GaugeColorProperty = BindableProperty.Create(propertyName: nameof(GaugeWidth),
-                                                                             returnType: typeof(Color),
-                                                                             declaringType: typeof(CircularGauge),
-                                                                             defaultBindingMode: BindingMode.OneWay,
-                                                                             propertyChanged: OnGaugeColorPropertyChanged);
+        public static BindableProperty GaugeColorProperty = BindableProperty.Create(propertyName: nameof(GaugeWidth),
+                                                                                    returnType: typeof(Color),
+                                                                                    declaringType: typeof(CircularGauge),
+                                                                                    defaultBindingMode: BindingMode.OneWay,
+                                                                                    propertyChanged: OnGaugeColorPropertyChanged);
 
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {

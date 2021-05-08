@@ -4,8 +4,14 @@
              xmlns:circularGauge="clr-namespace:epj.CircularGauge;assembly=epj.CircularGauge"
              x:Class="CircularGaugeSample.MainPage">
 
-  <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-    <circularGauge:CircularGauge WidthRequest="250" HeightRequest="250"/>
+  <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+    <Slider x:Name="StartAngleSlider" Maximum="360.0" Value="135.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+    <Slider x:Name="SweepAngleSlider" Maximum="360.0" Value="270.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+    <Slider x:Name="GaugeWidthSlider" Maximum="100.0" Value="25.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+    <circularGauge:CircularGauge WidthRequest="250" HeightRequest="250" VerticalOptions="Center" HorizontalOptions="Center"
+                                 StartAngle="{Binding Value, Source={x:Reference StartAngleSlider}}"
+                                 SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"
+                                 GaugeWidth="{Binding Value, Source={x:Reference GaugeWidthSlider}}" />
   </StackLayout>
 
 </ContentPage>
