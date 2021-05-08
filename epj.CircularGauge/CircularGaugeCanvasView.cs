@@ -16,10 +16,12 @@ namespace epj.CircularGauge
         private SKCanvas _canvas;
         private SKRect _drawRect;
         private SKPoint _center;
+        private float _startAngle90;
 
         #endregion
 
         #region Properties
+
         internal float StartAngle { get; set; } = 45.0f;
         internal float SweepAngle { get; set; } = 270.0f;
         internal float GaugeWidth { get; set; } = 40.0f;
@@ -32,6 +34,7 @@ namespace epj.CircularGauge
 
         #endregion
 
+        #region SKCanvasView Overrides
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             _info = e.Info;
@@ -45,28 +48,51 @@ namespace epj.CircularGauge
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
             //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
-            var startAngle90 = StartAngle + 90.0f;
+            _startAngle90 = StartAngle + 90.0f;
 
-            DrawGauge(startAngle90);
+            DrawGauge();
             //DrawScale();
             DrawNeedle();
         }
+
+        #endregion
+
+        #region Private Methods
 
         private void DrawNeedle()
         {
             //TODO: implement
 
             //first draw a circle as the base for the needle
-            using (var path = new SKPath())
+            using (var basePath = new SKPath())
             {
-                path.AddCircle(_center.X, _center.Y, 25.0f);
+                basePath.AddCircle(_center.X, _center.Y, 25.0f);
 
-                using (var paint = new SKPaint())
+                using (var basePaint = new SKPaint())
                 {
-                    paint.IsAntialias = true;
-                    paint.Color = NeedleColor.ToSKColor();
-                    paint.Style = SKPaintStyle.Fill;
-                    _canvas.DrawPath(path, paint);
+                    basePaint.IsAntialias = true;
+                    basePaint.Color = NeedleColor.ToSKColor();
+                    basePaint.Style = SKPaintStyle.Fill;
+                    _canvas.DrawPath(basePath, basePaint);
+                }
+            }
+
+            using (var needlePath = new SKPath())
+            {
+                needlePath.MoveTo(_center.X - 15.0f, _center.Y - 40.0f);
+                needlePath.LineTo(_center.X + 15.0f, _center.Y - 40.0f);
+                needlePath.LineTo(_center.X, _center.Y + _drawRect.Height * 0.55f);
+                needlePath.LineTo(_center.X - 15.0f, _center.Y - 40.0f);
+                needlePath.Close();
+
+                needlePath.Transform(SKMatrix.CreateRotationDegrees(StartAngle, _center.X, _center.Y));
+
+                using (var needlePaint = new SKPaint())
+                {
+                    needlePaint.IsAntialias = true;
+                    needlePaint.Color = NeedleColor.ToSKColor();
+                    needlePaint.Style = SKPaintStyle.Fill;
+                    _canvas.DrawPath(needlePath, needlePaint);
                 }
             }
         }
@@ -77,12 +103,12 @@ namespace epj.CircularGauge
             throw new NotImplementedException();
         }
 
-        private void DrawGauge(float startAngle)
+        private void DrawGauge()
         {
             //draw gauge base
             using (var path = new SKPath())
             {
-                path.AddArc(_drawRect, startAngle, SweepAngle);
+                path.AddArc(_drawRect, _startAngle90, SweepAngle);
 
                 using (var paint = new SKPaint())
                 {
@@ -92,7 +118,7 @@ namespace epj.CircularGauge
 
                         paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors,
                                 tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
-                            .WithLocalMatrix(SKMatrix.CreateRotationDegrees(startAngle, _center.X, _center.Y));
+                            .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
                     }
                     else
                     {
@@ -106,5 +132,7 @@ namespace epj.CircularGauge
                 }
             }
         }
+
+        #endregion
     }
 }
