@@ -28,6 +28,7 @@ namespace epj.CircularGauge
         internal float RangeStart { get; set; } = 0.0f;
         internal float RangeEnd { get; set; } = 100.0f;
         internal float Value { get; set; } = 50.0f;
+        internal Color NeedleColor { get; set; } = Color.Black;
 
         #endregion
 
@@ -54,6 +55,20 @@ namespace epj.CircularGauge
         private void DrawNeedle()
         {
             //TODO: implement
+
+            //first draw a circle as the base for the needle
+            using (var path = new SKPath())
+            {
+                path.AddCircle(_center.X, _center.Y, 25.0f);
+
+                using (var paint = new SKPaint())
+                {
+                    paint.IsAntialias = true;
+                    paint.Color = NeedleColor.ToSKColor();
+                    paint.Style = SKPaintStyle.Fill;
+                    _canvas.DrawPath(path, paint);
+                }
+            }
         }
 
         private void DrawScale()
