@@ -37,12 +37,8 @@ namespace epj.CircularGauge
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
                         var center = new SKPoint(info.Rect.MidX, info.Rect.MidY);
 
-                        paint.Shader = SKShader.CreateSweepGradient(center: center,
-                                                                    colors: colors,
-                                                                    tileMode: SKShaderTileMode.Clamp,
-                                                                    startAngle: 0.0f,
-                                                                    endAngle: SweepAngle)
-                                                .WithLocalMatrix(SKMatrix.CreateRotationDegrees(startAngle90, center.X, center.Y));
+                        paint.Shader = SKShader.CreateSweepGradient(center: center, colors: colors, tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
+                                               .WithLocalMatrix(SKMatrix.CreateRotationDegrees(startAngle90, center.X, center.Y));
 
                     }
                     else
