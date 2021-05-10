@@ -34,7 +34,16 @@ namespace epj.CircularGauge
 
         #endregion
 
+        #region Constructor
+
+        public CircularGaugeCanvasView()
+        {
+        }
+
+        #endregion
+
         #region SKCanvasView Overrides
+
         protected override void OnPaintSurface(SKPaintSurfaceEventArgs e)
         {
             _info = e.Info;
@@ -42,8 +51,10 @@ namespace epj.CircularGauge
             _canvas = _surface.Canvas;
             _canvas.Clear();
 
+            const int canvasDimension = 100;
+
             //setup the rectangle which we will draw in and the center point of the gauge
-            _drawRect = new SKRect(100, 100, _info.Width - 100, _info.Height - 100);
+            _drawRect = new SKRect(canvasDimension, canvasDimension, _info.Width - canvasDimension, _info.Height - canvasDimension);
             _center = new SKPoint(_info.Rect.MidX, _info.Rect.MidY);
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
@@ -119,9 +130,8 @@ namespace epj.CircularGauge
                     {
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
 
-                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors,
-                                tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
-                            .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
+                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors, tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
+                                               .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
                     }
                     else
                     {

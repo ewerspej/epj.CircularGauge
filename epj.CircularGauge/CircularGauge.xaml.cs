@@ -8,7 +8,7 @@ namespace epj.CircularGauge
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CircularGauge : ContentView
     {
-        private const float FloatDelta = 0.001f;
+        private const float DecimalDelta = 0.001f;
 
         #region Properties
         public float StartAngle
@@ -16,7 +16,7 @@ namespace epj.CircularGauge
             get => GaugeCanvas.StartAngle;
             set
             {
-                if (!(Math.Abs(value - GaugeCanvas.StartAngle) > FloatDelta))
+                if (!(Math.Abs(value - GaugeCanvas.StartAngle) > DecimalDelta))
                 {
                     return;
                 }
@@ -31,7 +31,7 @@ namespace epj.CircularGauge
             get => GaugeCanvas.SweepAngle;
             set
             {
-                if (!(Math.Abs(value - GaugeCanvas.SweepAngle) > FloatDelta))
+                if (!(Math.Abs(value - GaugeCanvas.SweepAngle) > DecimalDelta))
                 {
                     return;
                 }
@@ -46,7 +46,7 @@ namespace epj.CircularGauge
             get => GaugeCanvas.GaugeWidth;
             set
             {
-                if (!(Math.Abs(value - GaugeCanvas.GaugeWidth) > FloatDelta))
+                if (!(Math.Abs(value - GaugeCanvas.GaugeWidth) > DecimalDelta))
                 {
                     return;
                 }
@@ -91,7 +91,7 @@ namespace epj.CircularGauge
             get => GaugeCanvas.RangeStart;
             set
             {
-                if (Math.Abs(GaugeCanvas.RangeStart - value) < FloatDelta)
+                if (Math.Abs(GaugeCanvas.RangeStart - value) < DecimalDelta)
                 {
                     return;
                 }
@@ -106,7 +106,7 @@ namespace epj.CircularGauge
             get => GaugeCanvas.RangeEnd;
             set
             {
-                if (Math.Abs(GaugeCanvas.RangeEnd - value) < FloatDelta)
+                if (Math.Abs(GaugeCanvas.RangeEnd - value) < DecimalDelta)
                 {
                     return;
                 }
@@ -121,12 +121,29 @@ namespace epj.CircularGauge
             get => GaugeCanvas.Value;
             set
             {
-                if (Math.Abs(GaugeCanvas.Value - value) < FloatDelta)
+                if (Math.Abs(GaugeCanvas.Value - value) < DecimalDelta)
                 {
                     return;
                 }
 
                 GaugeCanvas.Value = value;
+                GaugeCanvas.InvalidateSurface();
+            }
+        }
+
+        private double _size;
+        public double Size
+        {
+            get => _size;
+            set
+            {
+                if (Math.Abs(_size - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                _size = value;
+                WidthRequest = HeightRequest = _size;
                 GaugeCanvas.InvalidateSurface();
             }
         }
@@ -177,6 +194,12 @@ namespace epj.CircularGauge
                                                                                defaultBindingMode: BindingMode.OneWay,
                                                                                propertyChanged: OnValuePropertyChanged);
 
+        public static BindableProperty SizeProperty = BindableProperty.Create(propertyName: nameof(Size),
+                                                                              returnType: typeof(double),
+                                                                              declaringType: typeof(CircularGauge),
+                                                                              defaultBindingMode: BindingMode.OneWay,
+                                                                              propertyChanged: OnSizePropertyChanged);
+
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).StartAngle = (float)newValue;
@@ -210,6 +233,11 @@ namespace epj.CircularGauge
         private static void OnValuePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).Value = (float)newValue;
+        }
+
+        private static void OnSizePropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).Size = (double)newValue;
         }
 
         #endregion

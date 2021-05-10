@@ -4,6 +4,6 @@
              xmlns:circularGauge="clr-namespace:epj.CircularGauge;assembly=epj.CircularGauge"
              x:Class="epj.CircularGauge.CircularGauge">
   <ContentView.Content>
-    <circularGauge:CircularGaugeCanvasView x:Name="GaugeCanvas" HorizontalOptions="Fill" VerticalOptions="Fill" />
+    <circularGauge:CircularGaugeCanvasView x:Name="GaugeCanvas" IgnorePixelScaling="False" />
   </ContentView.Content>
 </ContentView>
