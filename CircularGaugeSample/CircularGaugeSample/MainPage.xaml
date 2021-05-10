@@ -23,7 +23,7 @@
         <Label Grid.Row="1" Grid.Column="2" Text="{Binding Value, Source={x:Reference SweepAngleSlider}}"/>
 
         <Label Grid.Row="2" Grid.Column="0" Text="Gauge Width"/>
-        <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="200.0" Value="100.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+        <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="50.0" Value="10.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
         <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}"/>
 
         <Label Grid.Row="3" Grid.Column="0" Text="Max Value"/>

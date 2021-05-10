@@ -14,8 +14,8 @@ namespace epj.CircularGauge
         private SKImageInfo _info;
         private SKSurface _surface;
         private SKCanvas _canvas;
-        private SKRect _drawRect;
         private SKPoint _center;
+        private SKRect _drawRect;
         private float _startAngle90;
 
         #endregion
@@ -24,13 +24,15 @@ namespace epj.CircularGauge
 
         internal float StartAngle { get; set; } = 45.0f;
         internal float SweepAngle { get; set; } = 270.0f;
-        internal float GaugeWidth { get; set; } = 40.0f;
+        internal float GaugeWidth { get; set; } = 10.0f;
         internal Color GaugeColor { get; set; } = Color.Red;
         internal List<Color> GaugeGradientColors { get; set; } = new List<Color>();
         internal float RangeStart { get; set; } = 0.0f;
         internal float RangeEnd { get; set; } = 100.0f;
         internal float Value { get; set; } = 50.0f;
         internal Color NeedleColor { get; set; } = Color.Black;
+        internal int Size { get; set; } = 250;
+        internal int InternalPadding { get; set; } = 20;
 
         #endregion
 
@@ -38,6 +40,7 @@ namespace epj.CircularGauge
 
         public CircularGaugeCanvasView()
         {
+            IgnorePixelScaling = true;
         }
 
         #endregion
@@ -51,11 +54,9 @@ namespace epj.CircularGauge
             _canvas = _surface.Canvas;
             _canvas.Clear();
 
-            const int canvasDimension = 100;
-
             //setup the rectangle which we will draw in and the center point of the gauge
-            _drawRect = new SKRect(canvasDimension, canvasDimension, _info.Width - canvasDimension, _info.Height - canvasDimension);
-            _center = new SKPoint(_info.Rect.MidX, _info.Rect.MidY);
+            _drawRect = new SKRect(0 + InternalPadding, 0 + InternalPadding, Size - InternalPadding, Size - InternalPadding);
+            _center = new SKPoint(_drawRect.MidX, _drawRect.MidY);
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
             //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
@@ -75,7 +76,7 @@ namespace epj.CircularGauge
             //first draw a circle as the base for the needle
             using (var basePath = new SKPath())
             {
-                basePath.AddCircle(_center.X, _center.Y, 25.0f);
+                basePath.AddCircle(_center.X, _center.Y, _drawRect.Width * 0.05f);
 
                 using (var basePaint = new SKPaint())
                 {
@@ -89,10 +90,10 @@ namespace epj.CircularGauge
             using (var needlePath = new SKPath())
             {
                 //first set up needle pointing towards 0 degrees (or 6 o'clock)
-                needlePath.MoveTo(_center.X - 15.0f, _center.Y - 40.0f);
-                needlePath.LineTo(_center.X + 15.0f, _center.Y - 40.0f);
+                needlePath.MoveTo(_center.X - _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
+                needlePath.LineTo(_center.X + _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
                 needlePath.LineTo(_center.X, _center.Y + _drawRect.Height * 0.55f);
-                needlePath.LineTo(_center.X - 15.0f, _center.Y - 40.0f);
+                needlePath.LineTo(_center.X - _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
                 needlePath.Close();
 
                 //then calculate needle position in degrees
@@ -140,7 +141,7 @@ namespace epj.CircularGauge
 
                     paint.IsAntialias = true;
                     paint.Style = SKPaintStyle.Stroke;
-                    paint.StrokeWidth = GaugeWidth;
+                    paint.StrokeWidth = _drawRect.Width / 100.0f * GaugeWidth;
                     _canvas.DrawPath(path, paint);
                 }
             }
