@@ -125,8 +125,7 @@ namespace epj.CircularGauge
             //draw gauge base
             using (var path = new SKPath())
             {
-                var gaugeWidth = _drawRect.Width / 100.0f * GaugeWidth;
-                var gaugePadding = gaugeWidth / 2.0f;
+                var gaugePadding = GaugeWidth / 2.0f;
                 var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
                     _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
 
@@ -138,7 +137,7 @@ namespace epj.CircularGauge
                     {
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
 
-                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors, tileMode: SKShaderTileMode.Clamp, startAngle: 0.0f, endAngle: SweepAngle)
+                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors, tileMode: SKShaderTileMode.Decal, startAngle: 0.0f, endAngle: SweepAngle)
                                                .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
                     }
                     else
@@ -148,7 +147,7 @@ namespace epj.CircularGauge
 
                     paint.IsAntialias = true;
                     paint.Style = SKPaintStyle.Stroke;
-                    paint.StrokeWidth = gaugeWidth;
+                    paint.StrokeWidth = GaugeWidth;
                     _canvas.DrawPath(path, paint);
                 }
             }
