@@ -32,7 +32,7 @@ namespace epj.CircularGauge
         internal float Value { get; set; } = 50.0f;
         internal Color NeedleColor { get; set; } = Color.Black;
         internal int Size { get; set; } = 250;
-        internal int InternalPadding { get; set; } = 20;
+        internal float InternalPadding { get; private set; }
 
         #endregion
 
@@ -53,6 +53,8 @@ namespace epj.CircularGauge
             _surface = e.Surface;
             _canvas = _surface.Canvas;
             _canvas.Clear();
+
+            InternalPadding = 10.0f;
 
             //setup the rectangle which we will draw in and the center point of the gauge
             _drawRect = new SKRect(0 + InternalPadding, 0 + InternalPadding, Size - InternalPadding, Size - InternalPadding);
@@ -123,7 +125,12 @@ namespace epj.CircularGauge
             //draw gauge base
             using (var path = new SKPath())
             {
-                path.AddArc(_drawRect, _startAngle90, SweepAngle);
+                var gaugeWidth = _drawRect.Width / 100.0f * GaugeWidth;
+                var gaugePadding = gaugeWidth / 2.0f;
+                var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
+                    _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
+
+                path.AddArc(gaugeRect, _startAngle90, SweepAngle);
 
                 using (var paint = new SKPaint())
                 {
@@ -141,7 +148,7 @@ namespace epj.CircularGauge
 
                     paint.IsAntialias = true;
                     paint.Style = SKPaintStyle.Stroke;
-                    paint.StrokeWidth = _drawRect.Width / 100.0f * GaugeWidth;
+                    paint.StrokeWidth = gaugeWidth;
                     _canvas.DrawPath(path, paint);
                 }
             }
