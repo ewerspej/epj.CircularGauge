@@ -23,6 +23,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.StartAngle = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -38,6 +39,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.SweepAngle = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -53,6 +55,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.GaugeWidth = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -68,6 +71,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.GaugeColor = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -83,6 +87,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.GaugeGradientColors = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -98,6 +103,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.RangeStart = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -113,6 +119,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.RangeEnd = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -128,6 +135,7 @@ namespace epj.CircularGauge
 
                 GaugeCanvas.Value = value;
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
 
@@ -146,9 +154,10 @@ namespace epj.CircularGauge
                 WidthRequest = HeightRequest = _size;
                 GaugeCanvas.Size = (int)Math.Floor(_size);
                 GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
             }
         }
-
+        
         #endregion
 
         #region Bindable Properties
