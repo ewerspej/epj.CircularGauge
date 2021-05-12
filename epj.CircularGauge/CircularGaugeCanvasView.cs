@@ -20,7 +20,7 @@ namespace epj.CircularGauge
         private const float DefaultNeedleLength = 128.0f;
         private const float DefaultNeedleWidth = 18.0f;
         private const float DefaultNeedleOffset = 18.0f;
-        private const float DefaultNeedleBaseWidth = 24.0f;
+        private const float DefaultBaseWidth = 24.0f;
         private const int DefaultSize = 250;
 
         #endregion
@@ -51,7 +51,7 @@ namespace epj.CircularGauge
         internal float NeedleWidth { get; set; } = DefaultNeedleWidth;
         internal float NeedleOffset { get; set; } = DefaultNeedleOffset;
         internal Color BaseColor { get; set; } = Color.Black;
-        internal float NeedleBaseWidth { get; set; } = DefaultNeedleBaseWidth;
+        internal float BaseWidth { get; set; } = DefaultBaseWidth;
         internal int Size { get; set; } = DefaultSize;
         internal float InternalPadding => 10.0f;
 
@@ -127,7 +127,7 @@ namespace epj.CircularGauge
             //then draw a circle as the base for the needle on top of it
             using (var basePath = new SKPath())
             {
-                var baseRadius = ScaleToSize(NeedleBaseWidth / 2.0f);
+                var baseRadius = ScaleToSize(BaseWidth / 2.0f);
 
                 basePath.AddCircle(_center.X, _center.Y, baseRadius);
 

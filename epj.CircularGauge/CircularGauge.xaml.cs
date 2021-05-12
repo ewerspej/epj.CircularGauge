@@ -157,7 +157,103 @@ namespace epj.CircularGauge
                 OnPropertyChanged();
             }
         }
-        
+
+        public Color NeedleColor
+        {
+            get => GaugeCanvas.NeedleColor;
+            set
+            {
+                if (value == GaugeCanvas.NeedleColor)
+                {
+                    return;
+                }
+
+                GaugeCanvas.NeedleColor = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public float NeedleLength
+        {
+            get => GaugeCanvas.NeedleLength;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.NeedleLength - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.NeedleLength = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public float NeedleWidth
+        {
+            get => GaugeCanvas.NeedleWidth;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.NeedleWidth - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.NeedleWidth = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public float NeedleOffset
+        {
+            get => GaugeCanvas.NeedleOffset;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.NeedleOffset - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.NeedleOffset = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public Color BaseColor
+        {
+            get => GaugeCanvas.BaseColor;
+            set
+            {
+                if (value == GaugeCanvas.BaseColor)
+                {
+                    return;
+                }
+
+                GaugeCanvas.BaseColor = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public float BaseWidth
+        {
+            get => GaugeCanvas.BaseWidth;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.BaseWidth - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.BaseWidth = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Bindable Properties
@@ -210,6 +306,43 @@ namespace epj.CircularGauge
                                                                               defaultBindingMode: BindingMode.OneWay,
                                                                               propertyChanged: OnSizePropertyChanged);
 
+        public static BindableProperty NeedleColorProperty = BindableProperty.Create(propertyName: nameof(NeedleColor),
+                                                                                     returnType: typeof(Color),
+                                                                                     declaringType: typeof(CircularGauge),
+                                                                                     defaultBindingMode: BindingMode.OneWay,
+                                                                                     propertyChanged: OnNeedleColorPropertyChanged);
+
+
+        public static BindableProperty NeedleLengthProperty = BindableProperty.Create(propertyName: nameof(NeedleLength),
+                                                                                      returnType: typeof(float),
+                                                                                      declaringType: typeof(CircularGauge),
+                                                                                      defaultBindingMode: BindingMode.OneWay,
+                                                                                      propertyChanged: OnNeedleLengthPropertyChanged);
+
+        public static BindableProperty NeedleWidthProperty = BindableProperty.Create(propertyName: nameof(NeedleWidth),
+                                                                                     returnType: typeof(float),
+                                                                                     declaringType: typeof(CircularGauge),
+                                                                                     defaultBindingMode: BindingMode.OneWay,
+                                                                                     propertyChanged: OnNeedleWidthPropertyChanged);
+
+        public static BindableProperty NeedleOffsetProperty = BindableProperty.Create(propertyName: nameof(NeedleOffset),
+                                                                                      returnType: typeof(float),
+                                                                                      declaringType: typeof(CircularGauge),
+                                                                                      defaultBindingMode: BindingMode.OneWay,
+                                                                                      propertyChanged: OnNeedleOffsetPropertyChanged);
+
+        public static BindableProperty BaseColorProperty = BindableProperty.Create(propertyName: nameof(BaseColor),
+                                                                                   returnType: typeof(Color),
+                                                                                   declaringType: typeof(CircularGauge),
+                                                                                   defaultBindingMode: BindingMode.OneWay,
+                                                                                   propertyChanged: OnBaseColorPropertyChanged);
+
+        public static BindableProperty BaseWidthProperty = BindableProperty.Create(propertyName: nameof(BaseWidth),
+                                                                                   returnType: typeof(float),
+                                                                                   declaringType: typeof(CircularGauge),
+                                                                                   defaultBindingMode: BindingMode.OneWay,
+                                                                                   propertyChanged: OnBaseWidthPropertyChanged);
+
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).StartAngle = (float)newValue;
@@ -248,6 +381,36 @@ namespace epj.CircularGauge
         private static void OnSizePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).Size = (double)newValue;
+        }
+
+        private static void OnNeedleColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).NeedleColor = (Color)newValue;
+        }
+
+        private static void OnNeedleLengthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).NeedleLength = (float)newValue;
+        }
+
+        private static void OnNeedleWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).NeedleWidth = (float)newValue;
+        }
+
+        private static void OnNeedleOffsetPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).NeedleOffset = (float)newValue;
+        }
+
+        private static void OnBaseColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).BaseColor = (Color)newValue;
+        }
+
+        private static void OnBaseWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).BaseWidth = (float)newValue;
         }
 
         #endregion

@@ -2,62 +2,73 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:circularGauge="clr-namespace:epj.CircularGauge;assembly=epj.CircularGauge"
-             xmlns:converters="clr-namespace:CircularGaugeSample.Converters;assembly=CircularGaugeSample"
              x:Class="CircularGaugeSample.MainPage">
 
-  <ContentPage.Resources>
-    <ResourceDictionary>
-      <converters:StringToFloatConverter x:Key="StringToFloat" />
-    </ResourceDictionary>
-  </ContentPage.Resources>
-
   <!--<ScrollView>-->
-    <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
-      <Grid ColumnDefinitions="100,150,50" RowDefinitions="auto" HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
-        <Label Grid.Row="0" Grid.Column="0" Text="Start Angle"/>
-        <Slider Grid.Row="0" Grid.Column="1" x:Name="StartAngleSlider" Maximum="360.0" Value="45.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
-        <Label Grid.Row="0" Grid.Column="2" Text="{Binding Value, Source={x:Reference StartAngleSlider}}"/>
+  <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+    <Grid ColumnDefinitions="100,175,75" RowDefinitions="auto" HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
+      <Label Grid.Row="0" Grid.Column="0" Text="Start Angle"/>
+      <Slider Grid.Row="0" Grid.Column="1" x:Name="StartAngleSlider" Maximum="360.0" Value="45.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="0" Grid.Column="2" Text="{Binding Value, Source={x:Reference StartAngleSlider}}" LineBreakMode="NoWrap"/>
 
-        <Label Grid.Row="1" Grid.Column="0" Text="Sweep Angle"/>
-        <Slider Grid.Row="1" Grid.Column="1" x:Name="SweepAngleSlider" Maximum="360.0" Value="270.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
-        <Label Grid.Row="1" Grid.Column="2" Text="{Binding Value, Source={x:Reference SweepAngleSlider}}"/>
+      <Label Grid.Row="1" Grid.Column="0" Text="Sweep Angle"/>
+      <Slider Grid.Row="1" Grid.Column="1" x:Name="SweepAngleSlider" Maximum="360.0" Value="270.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="1" Grid.Column="2" Text="{Binding Value, Source={x:Reference SweepAngleSlider}}" LineBreakMode="NoWrap"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Text="Gauge Width"/>
-        <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="50.0" Value="10.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
-        <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}"/>
+      <Label Grid.Row="2" Grid.Column="0" Text="Gauge Width"/>
+      <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="50.0" Value="20.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}" LineBreakMode="NoWrap"/>
 
-        <Label Grid.Row="3" Grid.Column="0" Text="Max Value"/>
-        <Entry Grid.Row="3" Grid.Column="1" x:Name="MaxValueEntry" Keyboard="Numeric" Text="100" FontSize="Small" />
+      <Label Grid.Row="3" Grid.Column="0" Text="Value"/>
+      <Slider Grid.Row="3" Grid.Column="1" x:Name="ValueSlider" Maximum="100.0" Value="50.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="3" Grid.Column="2" Text="{Binding Value, Source={x:Reference ValueSlider}}" LineBreakMode="NoWrap"/>
 
-        <Label Grid.Row="4" Grid.Column="0" Text="Value"/>
-        <Slider Grid.Row="4" Grid.Column="1" x:Name="ValueSlider"
-              Maximum="{Binding Text, Source={x:Reference MaxValueEntry}, Converter={StaticResource StringToFloat}}"
-              Value="0.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
-        <Label Grid.Row="4" Grid.Column="2" Text="{Binding Value, Source={x:Reference ValueSlider}}"/>
+      <Label Grid.Row="4" Grid.Column="0" Text="Gauge Size"/>
+      <Slider Grid.Row="4" Grid.Column="1" x:Name="SizeSlider" Maximum="500" Value="250" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="4" Grid.Column="2" Text="{Binding Value, Source={x:Reference SizeSlider}}" LineBreakMode="NoWrap"/>
 
-        <Label Grid.Row="5" Grid.Column="0" Text="Gauge Size"/>
-        <Slider Grid.Row="5" Grid.Column="1" x:Name="SizeSlider" Maximum="500" Value="250" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
-        <Label Grid.Row="5" Grid.Column="2" Text="{Binding Value, Source={x:Reference SizeSlider}}"/>
-      </Grid>
+      <Label Grid.Row="5" Grid.Column="0" Text="Needle Length"/>
+      <Slider Grid.Row="5" Grid.Column="1" x:Name="NeedleLengthSlider" Maximum="150.0" Value="128.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="5" Grid.Column="2" Text="{Binding Value, Source={x:Reference NeedleLengthSlider}}" LineBreakMode="NoWrap"/>
 
-      <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
-                                   Size="{Binding Value, Source={x:Reference SizeSlider}}"
-                                   GaugeColor="Chocolate"
-                                   RangeStart="0.0"
-                                   RangeEnd="{Binding Text, Source={x:Reference MaxValueEntry}, Converter={StaticResource StringToFloat}}"
-                                   Value="{Binding Value, Source={x:Reference ValueSlider}}"
-                                   StartAngle="{Binding Value, Source={x:Reference StartAngleSlider}}"
-                                   SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"
-                                   GaugeWidth="{Binding Value, Source={x:Reference GaugeWidthSlider}}">
-        <circularGauge:CircularGauge.GaugeGradientColors>
-          <Color>DarkGreen</Color>
-          <Color>YellowGreen</Color>
-          <Color>Yellow</Color>
-          <Color>OrangeRed</Color>
-          <Color>DarkRed</Color>
-        </circularGauge:CircularGauge.GaugeGradientColors>
-      </circularGauge:CircularGauge>
-    </StackLayout>
+      <Label Grid.Row="6" Grid.Column="0" Text="Needle Width"/>
+      <Slider Grid.Row="6" Grid.Column="1" x:Name="NeedleWidthSlider" Maximum="50.0" Value="18.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="6" Grid.Column="2" Text="{Binding Value, Source={x:Reference NeedleWidthSlider}}" LineBreakMode="NoWrap"/>
+
+      <Label Grid.Row="7" Grid.Column="0" Text="Needle Offset"/>
+      <Slider Grid.Row="7" Grid.Column="1" x:Name="NeedleOffsetSlider" Minimum="-50.0" Maximum="50.0" Value="18.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="7" Grid.Column="2" Text="{Binding Value, Source={x:Reference NeedleOffsetSlider}}" LineBreakMode="NoWrap"/>
+
+      <Label Grid.Row="8" Grid.Column="0" Text="Base Width"/>
+      <Slider Grid.Row="8" Grid.Column="1" x:Name="BaseWidthSlider" Maximum="50.0" Value="24.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="8" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseWidthSlider}}" LineBreakMode="NoWrap"/>
+    </Grid>
+
+    <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
+                                 Size="{Binding Value, Source={x:Reference SizeSlider}}"
+                                 GaugeColor="Chocolate"
+                                 NeedleColor="#0c0c0c"
+                                 BaseColor="Black"
+                                 RangeStart="0.0"
+                                 RangeEnd="100.0"
+                                 Value="{Binding Value, Source={x:Reference ValueSlider}}"
+                                 StartAngle="{Binding Value, Source={x:Reference StartAngleSlider}}"
+                                 SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"
+                                 GaugeWidth="{Binding Value, Source={x:Reference GaugeWidthSlider}}"
+                                 NeedleLength="{Binding Value, Source={x:Reference NeedleLengthSlider}}"
+                                 NeedleWidth="{Binding Value, Source={x:Reference NeedleWidthSlider}}"
+                                 NeedleOffset="{Binding Value, Source={x:Reference NeedleOffsetSlider}}"
+                                 BaseWidth="{Binding Value, Source={x:Reference BaseWidthSlider}}">
+      <circularGauge:CircularGauge.GaugeGradientColors>
+        <Color>DarkGreen</Color>
+        <Color>DarkGreen</Color>
+        <Color>YellowGreen</Color>
+        <Color>Yellow</Color>
+        <Color>OrangeRed</Color>
+        <Color>DarkRed</Color>
+      </circularGauge:CircularGauge.GaugeGradientColors>
+    </circularGauge:CircularGauge>
+  </StackLayout>
   <!--</ScrollView>-->
 
 </ContentPage>
