@@ -93,22 +93,7 @@ namespace epj.CircularGauge
 
         private void DrawNeedle()
         {
-            //first draw a circle as the base for the needle
-            using (var basePath = new SKPath())
-            {
-                var baseRadius = ScaleToSize(NeedleBaseWidth / 2.0f);
-
-                basePath.AddCircle(_center.X, _center.Y, baseRadius);
-
-                using (var basePaint = new SKPaint())
-                {
-                    basePaint.IsAntialias = true;
-                    basePaint.Color = NeedleColor.ToSKColor();
-                    basePaint.Style = SKPaintStyle.Fill;
-                    _canvas.DrawPath(basePath, basePaint);
-                }
-            }
-
+            //first draw the needle
             using (var needlePath = new SKPath())
             {
                 //first set up needle pointing towards 0 degrees (or 6 o'clock)
@@ -135,6 +120,22 @@ namespace epj.CircularGauge
                     needlePaint.Color = NeedleColor.ToSKColor();
                     needlePaint.Style = SKPaintStyle.Fill;
                     _canvas.DrawPath(needlePath, needlePaint);
+                }
+            }
+
+            //then draw a circle as the base for the needle on top of it
+            using (var basePath = new SKPath())
+            {
+                var baseRadius = ScaleToSize(NeedleBaseWidth / 2.0f);
+
+                basePath.AddCircle(_center.X, _center.Y, baseRadius);
+
+                using (var basePaint = new SKPaint())
+                {
+                    basePaint.IsAntialias = true;
+                    basePaint.Color = NeedleColor.ToSKColor();
+                    basePaint.Style = SKPaintStyle.Fill;
+                    _canvas.DrawPath(basePath, basePaint);
                 }
             }
         }
