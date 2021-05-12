@@ -9,6 +9,22 @@ namespace epj.CircularGauge
 {
     internal sealed class CircularGaugeCanvasView : SKCanvasView
     {
+        #region Default Values
+
+        private const float DefaultStartAngle = 45.0f;
+        private const float DefaultSweepAngle = 270.0f;
+        private const float DefaultGaugeWidth = 10.0f;
+        private const float DefaultRangeStart = 0.0f;
+        private const float DefaultRangeEnd = 100.0f;
+        private const float DefaultValue = 50.0f;
+        private const float DefaultNeedleLength = 128.0f;
+        private const float DefaultNeedleWidth = 18.0f;
+        private const float DefaultNeedleOffset = 18.0f;
+        private const float DefaultNeedleBaseWidth = 24.0f;
+        private const int DefaultSize = 250;
+
+        #endregion
+
         #region Private Fields
 
         private SKImageInfo _info;
@@ -22,17 +38,21 @@ namespace epj.CircularGauge
 
         #region Properties
 
-        internal float StartAngle { get; set; } = 45.0f;
-        internal float SweepAngle { get; set; } = 270.0f;
-        internal float GaugeWidth { get; set; } = 10.0f;
+        internal float StartAngle { get; set; } = DefaultStartAngle;
+        internal float SweepAngle { get; set; } = DefaultSweepAngle;
+        internal float GaugeWidth { get; set; } = DefaultGaugeWidth;
         internal Color GaugeColor { get; set; } = Color.Red;
         internal List<Color> GaugeGradientColors { get; set; } = new List<Color>();
-        internal float RangeStart { get; set; } = 0.0f;
-        internal float RangeEnd { get; set; } = 100.0f;
-        internal float Value { get; set; } = 50.0f;
+        internal float RangeStart { get; set; } = DefaultRangeStart;
+        internal float RangeEnd { get; set; } = DefaultRangeEnd;
+        internal float Value { get; set; } = DefaultValue;
         internal Color NeedleColor { get; set; } = Color.Black;
-        internal int Size { get; set; } = 250;
-        internal float InternalPadding { get; private set; }
+        internal float NeedleLength { get; set; } = DefaultNeedleLength;
+        internal float NeedleWidth { get; set; } = DefaultNeedleWidth;
+        internal float NeedleOffset { get; set; } = DefaultNeedleOffset;
+        internal float NeedleBaseWidth { get; set; } = DefaultNeedleBaseWidth;
+        internal int Size { get; set; } = DefaultSize;
+        internal float InternalPadding => 10.0f;
 
         #endregion
 
@@ -53,8 +73,6 @@ namespace epj.CircularGauge
             _surface = e.Surface;
             _canvas = _surface.Canvas;
             _canvas.Clear();
-
-            InternalPadding = 10.0f;
 
             //setup the rectangle which we will draw in and the center point of the gauge
             _drawRect = new SKRect(0 + InternalPadding, 0 + InternalPadding, Size - InternalPadding, Size - InternalPadding);
@@ -78,7 +96,9 @@ namespace epj.CircularGauge
             //first draw a circle as the base for the needle
             using (var basePath = new SKPath())
             {
-                basePath.AddCircle(_center.X, _center.Y, _drawRect.Width * 0.05f);
+                var baseRadius = ScaleToSize(NeedleBaseWidth / 2.0f);
+
+                basePath.AddCircle(_center.X, _center.Y, baseRadius);
 
                 using (var basePaint = new SKPaint())
                 {
@@ -92,10 +112,15 @@ namespace epj.CircularGauge
             using (var needlePath = new SKPath())
             {
                 //first set up needle pointing towards 0 degrees (or 6 o'clock)
-                needlePath.MoveTo(_center.X - _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
-                needlePath.LineTo(_center.X + _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
-                needlePath.LineTo(_center.X, _center.Y + _drawRect.Height * 0.55f);
-                needlePath.LineTo(_center.X - _drawRect.Width * 0.035f, _center.Y - _drawRect.Width * 0.1f);
+                var widthOffset = ScaleToSize(NeedleWidth / 2.0f);
+                var needleOffset = ScaleToSize(NeedleOffset);
+                var needleStart = _center.Y - needleOffset;
+                var needleLength = ScaleToSize(NeedleLength);
+
+                needlePath.MoveTo(_center.X - widthOffset, needleStart);
+                needlePath.LineTo(_center.X + widthOffset, needleStart);
+                needlePath.LineTo(_center.X, needleStart + needleLength);
+                needlePath.LineTo(_center.X - widthOffset, needleStart);
                 needlePath.Close();
 
                 //then calculate needle position in degrees
@@ -125,7 +150,7 @@ namespace epj.CircularGauge
             //draw gauge base
             using (var path = new SKPath())
             {
-                var gaugePadding = GaugeWidth / 2.0f;
+                var gaugePadding = GaugeWidth / 2.0f / DefaultSize * Size;
                 var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
                     _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
 
@@ -147,11 +172,17 @@ namespace epj.CircularGauge
 
                     paint.IsAntialias = true;
                     paint.Style = SKPaintStyle.Stroke;
-                    paint.StrokeWidth = GaugeWidth;
+                    paint.StrokeWidth = GaugeWidth / DefaultSize * Size;
                     _canvas.DrawPath(path, paint);
                 }
             }
         }
+
+        #endregion
+
+        #region Helpers
+
+        private float ScaleToSize(float value) => value / DefaultSize * Size;
 
         #endregion
     }
