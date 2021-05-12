@@ -50,6 +50,7 @@ namespace epj.CircularGauge
         internal float NeedleLength { get; set; } = DefaultNeedleLength;
         internal float NeedleWidth { get; set; } = DefaultNeedleWidth;
         internal float NeedleOffset { get; set; } = DefaultNeedleOffset;
+        internal Color BaseColor { get; set; } = Color.Black;
         internal float NeedleBaseWidth { get; set; } = DefaultNeedleBaseWidth;
         internal int Size { get; set; } = DefaultSize;
         internal float InternalPadding => 10.0f;
@@ -133,7 +134,7 @@ namespace epj.CircularGauge
                 using (var basePaint = new SKPaint())
                 {
                     basePaint.IsAntialias = true;
-                    basePaint.Color = NeedleColor.ToSKColor();
+                    basePaint.Color = BaseColor.ToSKColor();
                     basePaint.Style = SKPaintStyle.Fill;
                     _canvas.DrawPath(basePath, basePaint);
                 }
