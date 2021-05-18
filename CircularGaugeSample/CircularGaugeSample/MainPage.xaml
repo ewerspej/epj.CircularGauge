@@ -6,7 +6,8 @@
 
   <!--<ScrollView>-->
   <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
-    <Grid ColumnDefinitions="100,175,75" RowDefinitions="auto" HorizontalOptions="CenterAndExpand" VerticalOptions="Start">
+    <Switch x:Name="Toggle" IsToggled="True" HorizontalOptions="Center" VerticalOptions="Start" />
+    <Grid ColumnDefinitions="100,175,75" RowDefinitions="auto" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" IsVisible="{Binding IsToggled, Source={x:Reference Toggle}}">
       <Label Grid.Row="0" Grid.Column="0" Text="Start Angle"/>
       <Slider Grid.Row="0" Grid.Column="1" x:Name="StartAngleSlider" Maximum="360.0" Value="45.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="0" Grid.Column="2" Text="{Binding Value, Source={x:Reference StartAngleSlider}}" LineBreakMode="NoWrap"/>
