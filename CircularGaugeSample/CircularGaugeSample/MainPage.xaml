@@ -17,7 +17,7 @@
       <Label Grid.Row="1" Grid.Column="2" Text="{Binding Value, Source={x:Reference SweepAngleSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="2" Grid.Column="0" Text="Gauge Width"/>
-      <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="50.0" Value="20.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Slider Grid.Row="2" Grid.Column="1" x:Name="GaugeWidthSlider" Maximum="125.0" Value="25.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="3" Grid.Column="0" Text="Value"/>
@@ -25,7 +25,7 @@
       <Label Grid.Row="3" Grid.Column="2" Text="{Binding Value, Source={x:Reference ValueSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="4" Grid.Column="0" Text="Gauge Size"/>
-      <Slider Grid.Row="4" Grid.Column="1" x:Name="SizeSlider" Maximum="500" Value="250" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Slider Grid.Row="4" Grid.Column="1" x:Name="SizeSlider" Maximum="500.0" Value="250.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="4" Grid.Column="2" Text="{Binding Value, Source={x:Reference SizeSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="5" Grid.Column="0" Text="Needle Length"/>
@@ -45,7 +45,7 @@
       <Label Grid.Row="8" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseWidthSlider}}" LineBreakMode="NoWrap"/>
     </Grid>
 
-    <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White"
+    <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
                                  Size="{Binding Value, Source={x:Reference SizeSlider}}"
                                  GaugeColor="Chocolate"
                                  NeedleColor="#0c0c0c"
