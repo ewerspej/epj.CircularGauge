@@ -61,7 +61,7 @@ namespace epj.CircularGauge
 
         public CircularGaugeCanvasView()
         {
-            IgnorePixelScaling = true;
+            IgnorePixelScaling = false;
         }
 
         #endregion
@@ -75,8 +75,12 @@ namespace epj.CircularGauge
             _canvas = _surface.Canvas;
             _canvas.Clear();
 
+            Size = Math.Min(_info.Size.Width, _info.Size.Height);
+            var horizontalOffset = (_info.Size.Width - Size) / 2;
+            var verticalOffset = (_info.Size.Height - Size) / 2;
+
             //setup the rectangle which we will draw in and the center point of the gauge
-            _drawRect = new SKRect(0 + InternalPadding, 0 + InternalPadding, Size - InternalPadding, Size - InternalPadding);
+            _drawRect = new SKRect(0 + InternalPadding + horizontalOffset, 0 + InternalPadding + verticalOffset, Size - (InternalPadding - horizontalOffset), Size - (InternalPadding - verticalOffset));
             _center = new SKPoint(_drawRect.MidX, _drawRect.MidY);
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),

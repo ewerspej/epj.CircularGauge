@@ -45,7 +45,7 @@
       <Label Grid.Row="8" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseWidthSlider}}" LineBreakMode="NoWrap"/>
     </Grid>
 
-    <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
+    <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="White"
                                  Size="{Binding Value, Source={x:Reference SizeSlider}}"
                                  GaugeColor="Chocolate"
                                  NeedleColor="#0c0c0c"

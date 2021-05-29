@@ -152,7 +152,6 @@ namespace epj.CircularGauge
 
                 _size = value;
                 WidthRequest = HeightRequest = _size;
-                GaugeCanvas.Size = (int)Math.Floor(_size);
                 GaugeCanvas.InvalidateSurface();
                 OnPropertyChanged();
             }
