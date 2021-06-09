@@ -21,6 +21,7 @@ namespace epj.CircularGauge
         private const float DefaultNeedleWidth = 18.0f;
         private const float DefaultNeedleOffset = 18.0f;
         private const float DefaultBaseWidth = 24.0f;
+        private const float DefaultBaseStrokeWidth = 4.0f;
         private const int DefaultSize = 250;
 
         #endregion
@@ -52,6 +53,9 @@ namespace epj.CircularGauge
         internal float NeedleOffset { get; set; } = DefaultNeedleOffset;
         internal Color BaseColor { get; set; } = Color.Black;
         internal float BaseWidth { get; set; } = DefaultBaseWidth;
+        internal Color BaseStrokeColor { get; set; } = Color.DimGray;
+        internal float BaseStrokeWidth { get; set; } = DefaultBaseStrokeWidth;
+        internal bool DrawBaseStrokeBeforeFill { get; set; } = false;
         internal int Size { get; set; } = DefaultSize;
         internal float InternalPadding => 10.0f;
 
@@ -90,6 +94,7 @@ namespace epj.CircularGauge
             DrawGauge();
             //DrawScale();
             DrawNeedle();
+            DrawNeedleBase();
         }
 
         #endregion
@@ -98,7 +103,6 @@ namespace epj.CircularGauge
 
         private void DrawNeedle()
         {
-            //first draw the needle
             using (var needlePath = new SKPath())
             {
                 //first set up needle pointing towards 0 degrees (or 6 o'clock)
@@ -127,20 +131,45 @@ namespace epj.CircularGauge
                     _canvas.DrawPath(needlePath, needlePaint);
                 }
             }
+        }
 
-            //then draw a circle as the base for the needle on top of it
+        private void DrawNeedleBase()
+        {
             using (var basePath = new SKPath())
             {
                 var baseRadius = ScaleToSize(BaseWidth / 2.0f);
 
                 basePath.AddCircle(_center.X, _center.Y, baseRadius);
 
-                using (var basePaint = new SKPaint())
+                var basePaint = new SKPaint();
+                var baseStrokePaint = new SKPaint();
+
+                try
                 {
                     basePaint.IsAntialias = true;
                     basePaint.Color = BaseColor.ToSKColor();
                     basePaint.Style = SKPaintStyle.Fill;
-                    _canvas.DrawPath(basePath, basePaint);
+
+                    baseStrokePaint.IsAntialias = true;
+                    baseStrokePaint.Color = BaseStrokeColor.ToSKColor();
+                    baseStrokePaint.StrokeWidth = ScaleToSize(BaseStrokeWidth);
+                    baseStrokePaint.Style = SKPaintStyle.Stroke;
+
+                    if (DrawBaseStrokeBeforeFill)
+                    {
+                        _canvas.DrawPath(basePath, baseStrokePaint);
+                        _canvas.DrawPath(basePath, basePaint);
+                    }
+                    else
+                    {
+                        _canvas.DrawPath(basePath, basePaint);
+                        _canvas.DrawPath(basePath, baseStrokePaint);
+                    }
+                }
+                finally
+                {
+                    basePaint?.Dispose();
+                    baseStrokePaint?.Dispose();
                 }
             }
         }
@@ -157,8 +186,7 @@ namespace epj.CircularGauge
             using (var path = new SKPath())
             {
                 var gaugePadding = GaugeWidth / 2.0f / DefaultSize * Size;
-                var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
-                    _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
+                var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding, _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
 
                 path.AddArc(gaugeRect, _startAngle90, SweepAngle);
 
@@ -168,7 +196,7 @@ namespace epj.CircularGauge
                     {
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
 
-                        paint.Shader = SKShader.CreateSweepGradient(center: _center, colors: colors, tileMode: SKShaderTileMode.Decal, startAngle: 0.0f, endAngle: SweepAngle)
+                        paint.Shader = SKShader.CreateSweepGradient(_center, colors, SKShaderTileMode.Decal, 0.0f, SweepAngle)
                                                .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
                     }
                     else

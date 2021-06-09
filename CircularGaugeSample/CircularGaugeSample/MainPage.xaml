@@ -5,9 +5,9 @@
              x:Class="CircularGaugeSample.MainPage">
 
   <!--<ScrollView>-->
-  <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+  <StackLayout VerticalOptions="Center">
     <Switch x:Name="Toggle" IsToggled="True" HorizontalOptions="Center" VerticalOptions="Start" />
-    <Grid ColumnDefinitions="100,175,75" RowDefinitions="auto" HorizontalOptions="CenterAndExpand" VerticalOptions="Start" IsVisible="{Binding IsToggled, Source={x:Reference Toggle}}">
+    <Grid ColumnDefinitions="125,200,75" RowDefinitions="auto" HorizontalOptions="Center" VerticalOptions="Start" Margin="16,8" IsVisible="{Binding IsToggled, Source={x:Reference Toggle}}">
       <Label Grid.Row="0" Grid.Column="0" Text="Start Angle"/>
       <Slider Grid.Row="0" Grid.Column="1" x:Name="StartAngleSlider" Maximum="360.0" Value="45.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="0" Grid.Column="2" Text="{Binding Value, Source={x:Reference StartAngleSlider}}" LineBreakMode="NoWrap"/>
@@ -43,6 +43,10 @@
       <Label Grid.Row="8" Grid.Column="0" Text="Base Width"/>
       <Slider Grid.Row="8" Grid.Column="1" x:Name="BaseWidthSlider" Maximum="50.0" Value="24.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="8" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseWidthSlider}}" LineBreakMode="NoWrap"/>
+
+      <Label Grid.Row="9" Grid.Column="0" Text="Base Stroke Width"/>
+      <Slider Grid.Row="9" Grid.Column="1" x:Name="BaseStrokeWidthSlider" Maximum="24.0" Value="8.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="9" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseStrokeWidthSlider}}" LineBreakMode="NoWrap"/>
     </Grid>
 
     <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
@@ -50,6 +54,8 @@
                                  GaugeColor="Chocolate"
                                  NeedleColor="#0c0c0c"
                                  BaseColor="Black"
+                                 BaseStrokeColor="DarkOrange"
+                                 DrawBaseStrokeBeforeFill="True"
                                  RangeStart="0.0"
                                  RangeEnd="100.0"
                                  Value="{Binding Value, Source={x:Reference ValueSlider}}"
@@ -59,7 +65,8 @@
                                  NeedleLength="{Binding Value, Source={x:Reference NeedleLengthSlider}}"
                                  NeedleWidth="{Binding Value, Source={x:Reference NeedleWidthSlider}}"
                                  NeedleOffset="{Binding Value, Source={x:Reference NeedleOffsetSlider}}"
-                                 BaseWidth="{Binding Value, Source={x:Reference BaseWidthSlider}}">
+                                 BaseWidth="{Binding Value, Source={x:Reference BaseWidthSlider}}"
+                                 BaseStrokeWidth="{Binding Value, Source={x:Reference BaseStrokeWidthSlider}}">
       <circularGauge:CircularGauge.GaugeGradientColors>
         <Color>DarkGreen</Color>
         <Color>DarkGreen</Color>

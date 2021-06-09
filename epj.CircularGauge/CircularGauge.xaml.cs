@@ -253,6 +253,54 @@ namespace epj.CircularGauge
             }
         }
 
+        public Color BaseStrokeColor
+        {
+            get => GaugeCanvas.BaseStrokeColor;
+            set
+            {
+                if (value == GaugeCanvas.BaseStrokeColor)
+                {
+                    return;
+                }
+
+                GaugeCanvas.BaseStrokeColor = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public float BaseStrokeWidth
+        {
+            get => GaugeCanvas.BaseStrokeWidth;
+            set
+            {
+                if (Math.Abs(GaugeCanvas.BaseStrokeWidth - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.BaseStrokeWidth = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
+        public bool DrawBaseStrokeBeforeFill
+        {
+            get => GaugeCanvas.DrawBaseStrokeBeforeFill;
+            set
+            {
+                if (GaugeCanvas.DrawBaseStrokeBeforeFill == value)
+                {
+                    return;
+                }
+
+                GaugeCanvas.DrawBaseStrokeBeforeFill = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Bindable Properties
@@ -342,6 +390,18 @@ namespace epj.CircularGauge
                                                                                    defaultBindingMode: BindingMode.OneWay,
                                                                                    propertyChanged: OnBaseWidthPropertyChanged);
 
+        public static BindableProperty BaseStrokeColorProperty = BindableProperty.Create(propertyName: nameof(BaseStrokeColor),
+                                                                                         returnType: typeof(Color),
+                                                                                         declaringType: typeof(CircularGauge),
+                                                                                         defaultBindingMode: BindingMode.OneWay,
+                                                                                         propertyChanged: OnBaseStrokeColorPropertyChanged);
+
+        public static BindableProperty BaseStrokeWidthProperty = BindableProperty.Create(propertyName: nameof(BaseStrokeWidth),
+                                                                                         returnType: typeof(float),
+                                                                                         declaringType: typeof(CircularGauge),
+                                                                                         defaultBindingMode: BindingMode.OneWay,
+                                                                                         propertyChanged: OnBaseStrokeWidthPropertyChanged);
+
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).StartAngle = (float)newValue;
@@ -410,6 +470,16 @@ namespace epj.CircularGauge
         private static void OnBaseWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).BaseWidth = (float)newValue;
+        }
+
+        private static void OnBaseStrokeColorPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).BaseStrokeColor = (Color)newValue;
+        }
+
+        private static void OnBaseStrokeWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).BaseStrokeWidth = (float)newValue;
         }
 
         #endregion
