@@ -21,7 +21,7 @@
       <Label Grid.Row="2" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeWidthSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="3" Grid.Column="0" Text="Value"/>
-      <Slider Grid.Row="3" Grid.Column="1" x:Name="ValueSlider" Maximum="100.0" Value="50.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Slider Grid.Row="3" Grid.Column="1" x:Name="ValueSlider" Maximum="200.0" Minimum ="50.0" Value="100.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="3" Grid.Column="2" Text="{Binding Value, Source={x:Reference ValueSlider}}" LineBreakMode="NoWrap"/>
 
       <Label Grid.Row="4" Grid.Column="0" Text="Gauge Size"/>
@@ -56,8 +56,8 @@
                                  BaseColor="White"
                                  BaseStrokeColor="#121212"
                                  DrawBaseStrokeBeforeFill="False"
-                                 RangeStart="0.0"
-                                 RangeEnd="100.0"
+                                 RangeStart="50.0"
+                                 RangeEnd="200.0"
                                  Value="{Binding Value, Source={x:Reference ValueSlider}}"
                                  StartAngle="{Binding Value, Source={x:Reference StartAngleSlider}}"
                                  SweepAngle="{Binding Value, Source={x:Reference SweepAngleSlider}}"

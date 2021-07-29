@@ -118,7 +118,7 @@ namespace epj.CircularGauge
                 needlePath.Close();
 
                 //then calculate needle position in degrees
-                var needlePosition = StartAngle + (Value / (RangeEnd - RangeStart) * SweepAngle);
+                var needlePosition = StartAngle + ((Value - RangeStart) / (RangeEnd - RangeStart) * SweepAngle);
 
                 //finally rotate needle to actual value
                 needlePath.Transform(SKMatrix.CreateRotationDegrees(needlePosition, _center.X, _center.Y));
