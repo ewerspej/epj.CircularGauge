@@ -80,6 +80,8 @@ namespace epj.CircularGauge
             _canvas.Clear();
 
             Size = Math.Min(_info.Size.Width, _info.Size.Height);
+
+            //offsets are used to always center the gauge inside the canvas
             var horizontalOffset = (_info.Size.Width - Size) / 2;
             var verticalOffset = (_info.Size.Height - Size) / 2;
 
