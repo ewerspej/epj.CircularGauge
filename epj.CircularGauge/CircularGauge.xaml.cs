@@ -301,6 +301,22 @@ namespace epj.CircularGauge
             }
         }
 
+        public float GaugeOffset
+        {
+            get => GaugeCanvas.GaugeOffset;
+            set
+            {
+                if(Math.Abs(GaugeCanvas.GaugeOffset - value) < DecimalDelta)
+                {
+                    return;
+                }
+
+                GaugeCanvas.GaugeOffset = value;
+                GaugeCanvas.InvalidateSurface();
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region Bindable Properties
@@ -402,6 +418,12 @@ namespace epj.CircularGauge
                                                                                          defaultBindingMode: BindingMode.OneWay,
                                                                                          propertyChanged: OnBaseStrokeWidthPropertyChanged);
 
+        public static BindableProperty GaugeOffsetProperty = BindableProperty.Create(propertyName: nameof(GaugeOffset),
+                                                                                     returnType: typeof(float),
+                                                                                     declaringType: typeof(CircularGauge),
+                                                                                     defaultBindingMode: BindingMode.OneWay,
+                                                                                     propertyChanged: OnGaugeOffsetPropertyChanged);
+
         private static void OnStartAnglePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).StartAngle = (float)newValue;
@@ -480,6 +502,11 @@ namespace epj.CircularGauge
         private static void OnBaseStrokeWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             ((CircularGauge)bindable).BaseStrokeWidth = (float)newValue;
+        }
+
+        private static void OnGaugeOffsetPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            ((CircularGauge)bindable).GaugeOffset = (float)newValue;
         }
 
         #endregion

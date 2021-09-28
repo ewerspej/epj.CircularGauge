@@ -22,6 +22,7 @@ namespace epj.CircularGauge
         private const float DefaultNeedleOffset = 18.0f;
         private const float DefaultBaseWidth = 24.0f;
         private const float DefaultBaseStrokeWidth = 4.0f;
+        private const float DefaultGaugeOffset = 0.0f;
         private const int DefaultSize = 250;
 
         #endregion
@@ -63,6 +64,7 @@ namespace epj.CircularGauge
         internal float BaseStrokeWidth { get; set; } = DefaultBaseStrokeWidth;
         internal bool DrawBaseStrokeBeforeFill { get; set; } = false;
         internal int Size { get; set; } = DefaultSize;
+        internal float GaugeOffset = DefaultGaugeOffset;
         internal float InternalPadding => 10.0f;
 
         #endregion
@@ -255,7 +257,7 @@ namespace epj.CircularGauge
 
         private SKRect GetGaugeRect()
         {
-            var gaugePadding = GaugeWidth / 2.0f / DefaultSize * Size;
+            var gaugePadding = ScaleToSize(GaugeWidth / 2.0f) + GaugeOffset;
             var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
                 _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
             return gaugeRect;

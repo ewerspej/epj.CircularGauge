@@ -47,6 +47,10 @@
       <Label Grid.Row="9" Grid.Column="0" Text="Base Stroke Width"/>
       <Slider Grid.Row="9" Grid.Column="1" x:Name="BaseStrokeWidthSlider" Maximum="24.0" Value="8.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
       <Label Grid.Row="9" Grid.Column="2" Text="{Binding Value, Source={x:Reference BaseStrokeWidthSlider}}" LineBreakMode="NoWrap"/>
+
+      <Label Grid.Row="10" Grid.Column="0" Text="Gauge Offset"/>
+      <Slider Grid.Row="10" Grid.Column="1" x:Name="GaugeOffsetSlider" Maximum="200.0" Value="0.0" MaximumTrackColor="LightSlateGray" MinimumTrackColor="DeepPink" />
+      <Label Grid.Row="10" Grid.Column="2" Text="{Binding Value, Source={x:Reference GaugeOffsetSlider}}" LineBreakMode="NoWrap"/>
     </Grid>
 
     <circularGauge:CircularGauge VerticalOptions="Center" HorizontalOptions="Center" BackgroundColor="Transparent"
@@ -66,7 +70,8 @@
                                  NeedleWidth="{Binding Value, Source={x:Reference NeedleWidthSlider}}"
                                  NeedleOffset="{Binding Value, Source={x:Reference NeedleOffsetSlider}}"
                                  BaseWidth="{Binding Value, Source={x:Reference BaseWidthSlider}}"
-                                 BaseStrokeWidth="{Binding Value, Source={x:Reference BaseStrokeWidthSlider}}">
+                                 BaseStrokeWidth="{Binding Value, Source={x:Reference BaseStrokeWidthSlider}}"
+                                 GaugeOffset="{Binding Value, Source={x:Reference GaugeOffsetSlider}}">
       <circularGauge:CircularGauge.GaugeGradientColors>
         <Color>DarkGreen</Color>
         <Color>DarkGreen</Color>
