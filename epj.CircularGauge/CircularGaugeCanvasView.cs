@@ -33,7 +33,13 @@ namespace epj.CircularGauge
         private SKCanvas _canvas;
         private SKPoint _center;
         private SKRect _drawRect;
-        private float _startAngle90;
+        private float _adjustedStartAngle;
+
+        //paint for the major units
+        private readonly SKPaint _majorUnitsPaint = new SKPaint
+        {
+            Color = SKColors.Black
+        };
 
         #endregion
 
@@ -91,19 +97,19 @@ namespace epj.CircularGauge
 
             //the coordinate system of SkiaSharp starts with 0 degrees at 3 o'clock (polar coordinates),
             //but we want 0 degrees at 6 o'clock, so we rotate everything by 90 degrees.
-            _startAngle90 = StartAngle + 90.0f;
+            _adjustedStartAngle = StartAngle + 90.0f;
 
-            DrawGauge();
-            //DrawScale();
-            DrawNeedle();
-            DrawNeedleBase();
+            OnDrawGauge();
+            OnDrawScale();
+            OnDrawNeedle();
+            OnDrawNeedleBase();
         }
 
         #endregion
 
         #region Private Methods
 
-        private void DrawNeedle()
+        private void OnDrawNeedle()
         {
             using (var needlePath = new SKPath())
             {
@@ -135,7 +141,7 @@ namespace epj.CircularGauge
             }
         }
 
-        private void DrawNeedleBase()
+        private void OnDrawNeedleBase()
         {
             using (var basePath = new SKPath())
             {
@@ -176,21 +182,54 @@ namespace epj.CircularGauge
             }
         }
 
-        private void DrawScale()
+        private void OnDrawScale()
         {
-            //TODO: implement
-            throw new NotImplementedException();
+            using (var scalePath = new SKPath())
+            {
+                //the arc path to draw the scale along
+                var gaugeRect = GetGaugeRect();
+                scalePath.AddArc(gaugeRect, _adjustedStartAngle, SweepAngle);
+
+                //TODO: only for testing purposes, remove later!
+                _canvas.DrawPath(scalePath, new SKPaint
+                {
+                    Style = SKPaintStyle.Stroke,
+                    StrokeWidth = 10,
+                    Color = SKColors.DarkGray
+                });
+
+                //template path for the major scale units
+                var majorUnitsPath = new SKPath();
+                majorUnitsPath.MoveTo(-5, -40);
+                majorUnitsPath.LineTo(-5, 40);
+                majorUnitsPath.LineTo(5, 40);
+                majorUnitsPath.LineTo(5, -40);
+                majorUnitsPath.Close();
+
+                //calculate length of arc path
+                var radius = gaugeRect.Width / 2;
+                var circumference = 2 * (float)Math.PI * radius;
+                var length = circumference * (SweepAngle / 360);
+
+                //calculate spacing based on length of arc path
+                var spacing = (float)Math.Round(length / 10); //we just use ten major units for now
+
+                //use SKPathEffect to draw major units along arc path
+                using (var majorUnitsPathEffect =
+                    SKPathEffect.Create1DPath(majorUnitsPath, spacing, 0, SKPath1DPathEffectStyle.Rotate))
+                {
+                    _majorUnitsPaint.PathEffect = majorUnitsPathEffect;
+                    _canvas.DrawPath(scalePath, _majorUnitsPaint);
+                }
+            }
         }
 
-        private void DrawGauge()
+        private void OnDrawGauge()
         {
             //draw gauge base
             using (var path = new SKPath())
             {
-                var gaugePadding = GaugeWidth / 2.0f / DefaultSize * Size;
-                var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding, _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
-
-                path.AddArc(gaugeRect, _startAngle90, SweepAngle);
+                path.AddArc(GetGaugeRect(), _adjustedStartAngle, SweepAngle);
 
                 using (var paint = new SKPaint())
                 {
@@ -199,7 +238,7 @@ namespace epj.CircularGauge
                         var colors = GaugeGradientColors.Select(color => color.ToSKColor()).ToArray();
 
                         paint.Shader = SKShader.CreateSweepGradient(_center, colors, SKShaderTileMode.Decal, 0.0f, SweepAngle)
-                                               .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_startAngle90, _center.X, _center.Y));
+                                               .WithLocalMatrix(SKMatrix.CreateRotationDegrees(_adjustedStartAngle, _center.X, _center.Y));
                     }
                     else
                     {
@@ -212,6 +251,14 @@ namespace epj.CircularGauge
                     _canvas.DrawPath(path, paint);
                 }
             }
+        }
+
+        private SKRect GetGaugeRect()
+        {
+            var gaugePadding = GaugeWidth / 2.0f / DefaultSize * Size;
+            var gaugeRect = new SKRect(_drawRect.Left + gaugePadding, _drawRect.Top + gaugePadding,
+                _drawRect.Right - gaugePadding, _drawRect.Bottom - gaugePadding);
+            return gaugeRect;
         }
 
         #endregion
