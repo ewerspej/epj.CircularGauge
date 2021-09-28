@@ -193,12 +193,12 @@ namespace epj.CircularGauge
                 scalePath.AddArc(gaugeRect, _adjustedStartAngle, SweepAngle);
 
                 //TODO: only for testing purposes, remove later!
-                _canvas.DrawPath(scalePath, new SKPaint
-                {
-                    Style = SKPaintStyle.Stroke,
-                    StrokeWidth = 10,
-                    Color = SKColors.DarkGray
-                });
+                //_canvas.DrawPath(scalePath, new SKPaint
+                //{
+                //    Style = SKPaintStyle.Stroke,
+                //    StrokeWidth = 10,
+                //    Color = SKColors.DarkGray
+                //});
 
                 //template path for the major scale units
                 var majorUnitsPath = new SKPath();
@@ -214,7 +214,7 @@ namespace epj.CircularGauge
                 var length = circumference * (SweepAngle / 360);
 
                 //calculate spacing based on length of arc path
-                var spacing = (float)Math.Round(length / 10); //we just use ten major units for now
+                var spacing = (float)Math.Floor(length / 10); //we just use ten major units for now
 
                 //use SKPathEffect to draw major units along arc path
                 using (var majorUnitsPathEffect =
